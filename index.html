@@ -283,8 +283,10 @@ body{
   transition:opacity 0.55s var(--ease-out);
 }
 
-/* Sibling-fade — Aesop's signature pattern preserved */
-.lang-list:hover .lang-item:not(:hover){opacity:0.32;}
+/* Sibling-fade — Aesop's signature pattern preserved.
+   Only an actual <a> (linkable) item triggers the fade; hovering the
+   disabled English <div> does nothing — neither it nor its siblings change. */
+.lang-list:has(a.lang-item:hover) .lang-item:not(:hover){opacity:0.32;}
 .lang-list:has(.lang-item.selected) .lang-item:not(.selected){opacity:0.15;}
 
 .lang-name{
@@ -406,6 +408,24 @@ body{
   .subtitle{margin-bottom:36px;}
   .signature{margin-top:32px;}
 }
+
+/* English — visible placeholder, not yet linked.
+   Lower opacity signals "informational only"; no hover affordance; immune to sibling-fade. */
+.lang-item--disabled{
+  cursor:default;
+  opacity:0.30;
+}
+.lang-item--disabled .lang-name,
+.lang-item--disabled:hover .lang-name,
+.lang-item--disabled:active .lang-name{
+  color:var(--paper-mute);
+  font-size:20px;        /* lock to base size — no hover lift */
+}
+/* When any sibling triggers fade or is selected, the disabled item keeps its own opacity */
+.lang-list:has(a.lang-item:hover) .lang-item--disabled,
+.lang-list:has(.lang-item.selected) .lang-item--disabled{
+  opacity:0.30;
+}
 </style>
 </head>
 <body>
@@ -459,21 +479,22 @@ body{
            Replace href values below with your language-specific
            Typeform reservation URLs
            ════════════════════════════════════════════════════════ -->
-      <a class="lang-item ko" href="https://YJ-MIMISOME.typeform.com/to/REPLACE_KO" onclick="go(event,this)">
+      <a class="lang-item ko" href="https://mimisomebusan.typeform.com/to/d2mDzyrZ#source=google" onclick="go(event,this)">
         <span class="lang-name">한국어</span>
       </a>
-      <a class="lang-item jp" href="https://YJ-MIMISOME.typeform.com/to/REPLACE_JP" onclick="go(event,this)">
+      <a class="lang-item jp" href="https://mimisomebusan.typeform.com/to/WK91PrvV#source=google" onclick="go(event,this)">
         <span class="lang-name">日本語</span>
       </a>
-      <a class="lang-item tw" href="https://YJ-MIMISOME.typeform.com/to/REPLACE_TW" onclick="go(event,this)">
+      <a class="lang-item tw" href="https://mimisomebusan.typeform.com/to/n0xu7HDB#source=google" onclick="go(event,this)">
         <span class="lang-name">中文 · 繁體</span>
       </a>
-      <a class="lang-item cn" href="https://YJ-MIMISOME.typeform.com/to/REPLACE_CN" onclick="go(event,this)">
+      <a class="lang-item cn" href="https://mimisomebusan.typeform.com/to/n0xu7HDB#source=google" onclick="go(event,this)">
         <span class="lang-name">中文 · 简体</span>
       </a>
-      <a class="lang-item en" href="https://YJ-MIMISOME.typeform.com/to/REPLACE_EN" onclick="go(event,this)">
+      <!-- English: visible in the list but intentionally unlinked until the form is ready -->
+      <div class="lang-item en lang-item--disabled" aria-disabled="true">
         <span class="lang-name">English</span>
-      </a>
+      </div>
     </div>
   </nav>
 
